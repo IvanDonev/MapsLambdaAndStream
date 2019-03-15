@@ -1,0 +1,47 @@
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class E04_Orders {
+    public static void main (String[] args){
+        Scanner scanner = new Scanner(System.in);
+
+        Map<String, Double> productQuantity = new LinkedHashMap<>();
+        Map<String, Double> productPrice = new LinkedHashMap<>();
+
+        while (true){
+            String[] input = scanner.nextLine().split("\\s+");
+
+            if (input[0].equalsIgnoreCase("buy")){
+                break;
+            }
+
+            String productName = input[0];
+            Double currentPrice = Double.parseDouble(input[1]);
+
+            Double currentQuantity = Double.parseDouble(input[2]);
+
+
+            if (!productQuantity.containsKey(productName)){
+                productQuantity.put(productName, currentQuantity);
+                productPrice.put(productName, currentPrice);
+            } else {
+                productQuantity.put(productName, productQuantity.get(productName) + currentQuantity);
+                    if (!productPrice.get(productName).equals(currentPrice)){
+                        productPrice.put(productName, currentPrice);
+                    }
+            }
+
+        }
+
+        Map<String, Double> orders = new LinkedHashMap<>();
+
+        productQuantity.entrySet().forEach(kvp -> orders.putIfAbsent(kvp.getKey(), kvp.getValue() * productPrice.get(kvp.getKey())));
+
+        String pattern = "%s -> %.2f";
+        orders.entrySet().forEach(kvp -> System.out.println(String.format(pattern, kvp.getKey(), kvp.getValue())));
+
+
+
+    }
+}
