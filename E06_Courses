@@ -1,0 +1,48 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class E06_Courses {
+    public static void main (String[] args){
+        Scanner scanner = new Scanner(System.in);
+
+
+        Map<String, List<String>> enlistedList = new LinkedHashMap<>();
+
+        while (true){
+            String[] inputCommands = scanner.nextLine().split(" : ");
+
+            if (inputCommands[0].equalsIgnoreCase("end")){
+                break;
+            }
+
+            String courseName = inputCommands[0];
+            String personName = inputCommands[1];
+
+            if (!enlistedList.containsKey(courseName)){
+                enlistedList.put(courseName, new ArrayList<>());
+                enlistedList.get(courseName).add(personName);
+            } else {
+                enlistedList.get(courseName).add(personName);
+            }
+
+        }
+
+
+        enlistedList.entrySet().stream()
+                .sorted((e1, e2) -> Integer.compare(e2.getValue().size(), e1.getValue().size()))
+                .forEach(e -> {
+
+                    System.out.println(String.format("%s: %d", e.getKey(), e.getValue().size()));
+                    List<String> sorted = e.getValue().stream().sorted((p1, p2) -> p1.compareTo(p2)).collect(Collectors.toList());
+
+                    for (int i = 0; i <sorted.size(); i++) {
+                        System.out.println(String.format("-- %s", sorted.get(i)));
+                    }
+
+                });
+
+
+        }
+
+    }
+
