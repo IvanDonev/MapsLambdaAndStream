@@ -1,0 +1,88 @@
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class E03_LegendaryFarming {
+    public static void main (String[] args){
+        Scanner scanner = new Scanner(System.in);
+
+        Map<String, Integer> keyResources = new LinkedHashMap<>();
+
+        keyResources.put("shards", 0);
+        keyResources.put("fragments", 0);
+        keyResources.put("motes", 0);
+
+        Map<String, Integer> junkResources = new LinkedHashMap<>();
+        boolean itemObtained = false;
+
+        while (!itemObtained){
+            String[] inputCommands = scanner.nextLine().split("\\s+");
+
+
+
+            for (int i = 0; i <inputCommands.length ; i+=2) {
+                int quantity = Integer.parseInt(inputCommands[i]);
+                String resourceType = inputCommands[i+1].toLowerCase();
+
+                if (resourceType.equalsIgnoreCase("shards")){
+                    keyResources.put(resourceType, keyResources.get(resourceType) + quantity);
+
+                } else if (resourceType.equalsIgnoreCase("fragments")){
+                    keyResources.put(resourceType, keyResources.get(resourceType) + quantity);
+                } else if (resourceType.equalsIgnoreCase("motes")){
+                    keyResources.put(resourceType, keyResources.get(resourceType) + quantity);
+                } else {
+                    if (!junkResources.containsKey(resourceType)){
+                        junkResources.put(resourceType, quantity);
+                    } else {
+                        junkResources.put(resourceType, junkResources.get(resourceType) + quantity);
+                    }
+                    continue;
+                }
+
+
+                if (keyResources.get(resourceType) >= 250){
+
+
+                    if (resourceType.equalsIgnoreCase("shards")){
+                        System.out.println("Shadowmourne obtained!");
+                        keyResources.put(resourceType, keyResources.get(resourceType) - 250);
+                        itemObtained = true;
+                        break;
+                    } else if (resourceType.equalsIgnoreCase("fragments")){
+                        System.out.println("Valanyr obtained!");
+                        keyResources.put(resourceType, keyResources.get(resourceType) - 250);
+                        itemObtained = true;
+                        break;
+                    } else if (resourceType.equalsIgnoreCase("motes")){
+                        System.out.println("Dragonwrath obtained!");
+                        keyResources.put(resourceType, keyResources.get(resourceType) - 250);
+                        itemObtained = true;
+                        break;
+                }
+                }
+
+            }
+
+
+        }
+
+        keyResources
+                .entrySet()
+                .stream()
+                .sorted((e1, e2) -> {
+                    int sort = Integer.compare(e2.getValue(), e1.getValue());
+                    if (sort == 0){
+                        sort = e1.getKey().compareTo(e2.getKey());
+                    }
+                    return sort;
+
+                } ).forEach(e -> System.out.println(String.format("%s: %d", e.getKey(), e.getValue())));
+
+
+        junkResources.entrySet().stream()
+                                .sorted((e1, e2) -> e1.getKey().compareTo(e2.getKey()))
+                                .forEach(e -> System.out.println(String.format("%s: %d", e.getKey(), e.getValue())));
+
+    }
+}
