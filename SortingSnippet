@@ -1,0 +1,18 @@
+       keyResources
+                .entrySet()
+                .stream()
+                .sorted((e1, e2) -> {
+                    int sort = Integer.compare(e2.getValue(), e1.getValue());
+                    if (sort == 0){
+                        sort = e1.getKey().compareTo(e2.getKey());
+                    }
+                    return sort;
+
+                } ).forEach(e -> System.out.println(String.format("%s: %d", e.getKey(), e.getValue())));
+
+
+        junkResources.entrySet().stream()
+                                .sorted((e1, e2) -> e1.getKey().compareTo(e2.getKey()))
+                                .forEach(e -> System.out.println(String.format("%s: %d", e.getKey(), e.getValue())));
+
+    }
