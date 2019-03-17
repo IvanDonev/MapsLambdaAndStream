@@ -1,0 +1,31 @@
+import java.util.*;
+
+public class E08_CompanyUsers {
+    public static void main (String[] args){
+        Scanner scanner = new Scanner(System.in);
+        Map<String, Set<String>> employeeData = new TreeMap<>();
+        String command = scanner.nextLine();
+
+
+
+        while (!command.equalsIgnoreCase("End")){
+            String[] inputData = command.split(" -> ");
+
+            employeeData.putIfAbsent(inputData[0], new LinkedHashSet<>());
+            employeeData.get(inputData[0]).add(inputData[1].toUpperCase());
+
+            command = scanner.nextLine();
+        }
+
+
+        employeeData.entrySet().stream().forEach(e -> {
+            System.out.println(e.getKey());
+            e.getValue().stream().forEach(innerList ->{
+                System.out.println(String.format("-- %s", innerList));
+
+            });
+
+        });
+
+    }
+}
